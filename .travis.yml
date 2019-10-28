@@ -18,5 +18,5 @@ after_success:
 
   - docker push lavinascoz/multi-client
   - docker push lavinascoz/multi-nginx
-  - docker ṕush lavinascoz/multi-server
+  - docker push lavinascoz/multi-server
   - docker push lavinascoz/multi-worker
