@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t lavinascoz/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true lavinascoz/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t lavinascoz/multi-client ./client
+  - docker build -t lavinascoz/multi-nginx ./nginx
+  - docker build -t lavinascoz/multi-server ./server
+  - docker build -t lavinascoz/multi-worker ./worker
+ 
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push lavinascoz/multi-client
+  - docker push lavinascoz/multi-nginx
+  - docker ṕush lavinascoz/multi-server
+  - docker push lavinascoz/multi-worker
